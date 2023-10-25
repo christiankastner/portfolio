@@ -919,6 +919,11 @@
     postprocessing "^6.32.1"
     three-stdlib "^2.23.4"
 
+"@studio-freight/lenis@^1.0.27":
+  version "1.0.27"
+  resolved "https://registry.yarnpkg.com/@studio-freight/lenis/-/lenis-1.0.27.tgz#1a333e192efa1a036074f7dcffba847d4c45f6d1"
+  integrity sha512-1I6EaWR9rxdFjIJtF52CtETJt9ngfY4AjawrJY5pLxCvHa/lQZ+1v2gTUntwNZkuks6E2It6YEXV6jnpnCZFjA==
+
 "@types/babel__core@^7.1.18":
   version "7.1.19"
   resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.1.19.tgz#7b497495b7d1b4812bdb9d02804d0576f43ee460"

@@ -1,14 +1,14 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { Scene } from './components/organisms/Scene/Scene';
+import { SmoothScroll } from './components/atoms/SmoothScroll';
 
-const appRoot = document.querySelector('[data-react="lattice-man"]');
+const appRoot = document.querySelector('[data-react="canvas"]');
 
 if (appRoot) {
-  const root = createRoot(appRoot); // createRoot(container!) if you use TypeScript
+  const root = createRoot(appRoot);
   root.render(
     <React.StrictMode>
-      <Scene />
+      <SmoothScroll />
     </React.StrictMode>,
   );
 }

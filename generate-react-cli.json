@@ -1,0 +1,51 @@
+{
+  "usesTypeScript": true,
+  "usesCssModule": false,
+  "testLibrary": "jest",
+  "cssPreprocessor": "scss",
+  "component": {
+    "atom": {
+      "customTemplates": {
+        "component": "scripts/generator-templates/component/TemplateName.tsx",
+        "index": "scripts/generator-templates/component/index.ts"
+      },
+      "path": "src/components/atoms",
+      "withLazy": false,
+      "withStory": false,
+      "withStyle": false,
+      "withTest": false,
+      "withIndex": true
+    },
+    "molecule": {
+      "customTemplates": {
+        "component": "scripts/generator-templates/component/TemplateName.tsx",
+        "index": "scripts/generator-templates/component/index.ts"
+      },
+      "path": "src/components/molecules",
+      "withLazy": false,
+      "withStory": false,
+      "withStyle": false,
+      "withTest": false,
+      "withIndex": true
+    },
+    "organism": {
+      "customTemplates": {
+        "component": "scripts/generator-templates/component/TemplateName.tsx",
+        "index": "scripts/generator-templates/component/index.ts"
+      },
+      "path": "src/components/organisms",
+      "withLazy": false,
+      "withStory": false,
+      "withStyle": false,
+      "withTest": false,
+      "withIndex": true
+    },
+    "default": {
+      "path": "src/components",
+      "withStyle": false,
+      "withTest": false,
+      "withStory": false,
+      "withLazy": false
+    }
+  }
+}
