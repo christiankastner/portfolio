@@ -1,56 +1,33 @@
-# ViteJs + TypeScript + Webflow = ❤️
+# React Three Fiber starter
 
-This is a basic setup with [ViteJs](https://vitejs.dev/) and [Typescript](https://www.typescriptlang.org/) that you can use for your Webflow website.
-`jQuery` is already installed and declared as an external dependency.
+## How to implement keyboard / GamePad controls
 
-I'm using [Netlify](https://www.netlify.com/) to build and host my code because it's easy to use, free, and has serverless functions out of the box. Feel free to use your favorite CDN.
+The Yallzilla demo branch implements this and can be followed.
 
-## Live demo
+To make it easy to get references to those files while working in another branch, temporarily check out yallzilla and then copy the contents of these files into new blank files:
 
-You can find a simple example of a Webflow site using this setup [here](https://vite-typescript.webflow.io/). The code is hosted on Netlify [here](https://vite-typescript-webflow.netlify.app/main.js). If you want to see the Webflow preview, it's [here](https://preview.webflow.com/preview/vite-typescript?utm_medium=preview_link&utm_source=designer&utm_content=vite-typescript&preview=20fd1e1f69661819ee0812a9740cbdd3&workflow=preview) 👍
+- Scene.tsx
+- Yallzilla.tsx
 
-<br />
+Cut your demo's branch from the branch starter/fiber, which includes all the necessary hooks, components and consts for the system.
 
-## How to use with Webflow
+To implement, you can flexibly migrate the following bits from Yallzilla's
+files:
 
-### 🇫🇷 French
-The doc is [here](https://github.com/armandsalle/vite-typescript-webflow/blob/main/HowToUse_TS_FR.md) 
+### Scene:
 
-### 🇬🇧 English
-The doc is [here](https://github.com/armandsalle/vite-typescript-webflow/blob/main/HowToUse_TS_EN.md) 
+- migrate and set `inputAxis` and `hasMainAction` consts for your demo. It's handy to keep these inside the Scene function body for hot reload on change.
+- for keyboard support, copy the `useKeyInputRelay` hook instance
+- for `GamePad` support copy the `GamePad` component in the scene
+- if you want to be able to toggle the `GamePad` on desktop, follow the example that adds `useKeyControls(topLevelKeyHandlers, !isMobile);` which sets the `showButtonsDesk` state (and `_showButtonsDesk` ref) on toggle. The state is also passed into `GamePad` as a prop.
+- finally, copy and manually update the `customIntroText` in `DemoCanvas` props to tell the user what's going on
 
-<br />
+### Game Characters / Components that listen for events:
 
-## Building and running on localhost
+- from your copy of the Yallzilla file, look at how `useInputEvents` is implemented.
+- In short, many different types of inputs are translated into standardized 'Start/End' events, like `rightStart`.
 
-This project is using `yarn`.
+### Limitations:
 
-First, install dependencies:
-
-```sh
-yarn
-```
-
-To launch a local dev server:
-
-```sh
-yarn dev
-```
-
-To create a production build:
-
-```sh
-yarn build
-```
-
-To clean the local `/dist` folder:
-
-```sh
-yarn clean
-```
-
-To lint the code with ESLint and Prettier:
-
-```sh
-yarn lint:fix
-```
+- Currently 45 angles are supported as combinations of cardinal directions, not separate events
+- "circle" and "circleTop" axes are supported which include 45 angles, but "cross" and "crossTop" (cardinals only) are not yet. That will require tracking key-down and canceling existing states on each new press.

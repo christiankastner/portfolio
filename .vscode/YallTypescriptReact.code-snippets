@@ -1,0 +1,28 @@
+{
+  "React Stateless Functional Component": {
+    "prefix": "fc",
+    "description": "React Functional Component template",
+    "body": [
+      "import { FC } from 'react';",
+      "import tw, { css, styled } from 'twin.macro';",
+      "import { TwinCSS } from '~/config';",
+      "",
+      "type $1Props = {",
+      "  //",
+      "};",
+      "",
+      "/**",
+      " * $2",
+      " */",
+      "export const $1: FC<$1Props> = (props) => {",
+      "  return (",
+      "    <Container>",
+      "      Hello!",
+      "    </Container>",
+      "  );",
+      "};",
+      "",
+      "const Container = tw.div`w-full`;"
+    ]
+  }
+}
