@@ -19,10 +19,5 @@ export const SmoothScroll: FC<SmoothScrollProps> = (props) => {
     }
   });
 
-  return (
-    <div
-      tw="fixed top-0 left-0 h-44 w-44 bg-black"
-      css={tw`fixed top-0 left-0 h-44 w-44 bg-black z-[100]`}
-    ></div>
-  );
+  return <></>;
 };
