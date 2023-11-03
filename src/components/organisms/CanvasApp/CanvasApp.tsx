@@ -1,6 +1,8 @@
-import React, { FC, Suspense, lazy, useEffect, useState } from 'react';
+import React, { FC, Suspense, lazy, useEffect, useRef, useState } from 'react';
 import { SmoothScroll } from '../../atoms/SmoothScroll';
 import { Loader } from '../Loader';
+import Lenis from '@studio-freight/lenis';
+import { useAnimationFrame } from 'framer-motion';
 const CanvasBackground = lazy(
   () => import('../CanvasBackground/CanvasBackground'),
 );
@@ -19,9 +21,10 @@ export const CanvasApp: FC<CanvasAppProps> = () => {
       setLoaded(true);
     }, 2000);
   }, []);
+
   return (
     <>
-      <SmoothScroll />
+      <SmoothScroll loaded={loaded} />
       <Loader loaded={loaded} />
       <Suspense fallback={null}>
         <CanvasBackground />

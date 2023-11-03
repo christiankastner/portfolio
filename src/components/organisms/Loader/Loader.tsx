@@ -37,7 +37,7 @@ export const Loader: FC<LoaderProps> = ({ loaded }) => {
             opacity: {
               duration: 0.5,
               delay: 1,
-              easing: [0.165, 0.84, 0.44, 1],
+              easing: 'ease-in-out',
             },
           },
         );
