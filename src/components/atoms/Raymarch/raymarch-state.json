@@ -1,0 +1,28 @@
+{
+  "sheetsById": {
+    "Panels": {
+      "staticOverrides": {
+        "byObject": {
+          "Default panel": {
+            "supershapeOneM": 18.5,
+            "supershapeOne": {
+              "m": 5.399999999999988,
+              "nOne": -0.6600000000000003,
+              "nTwo": 2.499999999999989,
+              "nThree": 0.9999999999999912
+            },
+            "supershapeTwo": {
+              "m": 18.90000000000001,
+              "nOne": 1.5999999999999959,
+              "nThree": 0.29999999999999954
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitionVersion": "0.4.0",
+  "revisionHistory": [
+    "uHM87J7WBaH_dSo2"
+  ]
+}
