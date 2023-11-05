@@ -11,10 +11,10 @@ export type CanvasBackgroundProps = {
  *
  */
 const CanvasBackground: FC<CanvasBackgroundProps> = () => {
-  return <Canvas>
+  return <>
   <Raymarch />
 <Stats />
-  </Canvas>;
+  </>;
 };
 
 export default CanvasBackground;

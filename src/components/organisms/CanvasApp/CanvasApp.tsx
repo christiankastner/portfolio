@@ -1,5 +1,6 @@
 import React, { FC, Suspense, lazy, useEffect, useState } from 'react';
 import { SmoothScroll } from '../../atoms/SmoothScroll';
+import { Canvas } from '@react-three/fiber';
 const CanvasBackground = lazy(
   () => import('../CanvasBackground/CanvasBackground'),
 );
@@ -20,12 +21,12 @@ export const CanvasApp: FC<CanvasAppProps> = () => {
   }, []);
 
   return (
-    <>
+    <Canvas>
       <SmoothScroll loaded={loaded} />
       {/* <Loader loaded={loaded} /> */}
       <Suspense fallback={null}>
         <CanvasBackground />
       </Suspense>
-    </>
+    </Canvas>
   );
 };

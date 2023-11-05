@@ -164,7 +164,7 @@ void main() {
         vec3 p = ro + rd * d;
     	vec3 dif = getDiff(p, rd);
     	col.rgb = vec3(.8);
-      	vec3 lightPos = normalize(vec3(10., 10.0, 20.0));
+      	vec3 lightPos = normalize(vec3(0., -10.0, 10.0));
      	vec3 l = normalize(lightPos - p);
       	vec3 n = getNormal(p);
     	float s = 0.7 + 0.3 *dot(n, l);

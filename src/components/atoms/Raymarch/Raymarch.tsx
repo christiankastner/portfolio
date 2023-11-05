@@ -1,4 +1,4 @@
-import { useFrame } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import React, { useMemo, useRef } from 'react';
 import { initialize, types, useControls } from 'theatric';
 import * as THREE from "three";
@@ -55,11 +55,13 @@ const Raymarch = () => {
 
     const shaderRef = useRef<THREE.ShaderMaterial>(null)
     const resolution = useRef(new THREE.Vector2(0,0))
+    const {pointer} = useThree()
 
     const uniforms = useMemo(() => {
         return {
-            iTime: {value: 0},
+            iTime: { value: 0 },
             iResolution: {value: resolution.current},
+            iMouse: {value: pointer},
             uSupershapeOneM: {value: supershapeOne.m},
             uSupershapeOneNOne: {value: supershapeOne.nOne},
             uSupershapeOneNTwo: {value: supershapeOne.nTwo},
@@ -111,7 +113,7 @@ const Raymarch = () => {
 
                         vec3 bgColor = mix(vec3(.21), vec3(.75), gradientFactor);
 
-                        if (length(uv) - .1 < .001 && length(uv) - .1 > - .001) {
+                        if (length(uv) - .15 < .001 && length(uv) - .15 > - .001) {
                             bgColor *= 1.15;
                         }
                         if (length(uv) - .3 < .001 && length(uv) - .3 > - .001) {
