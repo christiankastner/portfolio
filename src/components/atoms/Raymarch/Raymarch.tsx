@@ -1,5 +1,5 @@
 import { useFrame } from '@react-three/fiber';
-import { useMemo, useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { initialize, types, useControls } from 'theatric';
 import * as THREE from "three";
 import raymarchState from "./raymarch-state.json";
@@ -14,7 +14,7 @@ initialize({
 
 const Raymarch = () => {
 
-    const {supershapeOne, supershapeTwo} = useControls({
+    const {supershapeOne, supershapeTwo, fog} = useControls({
         supershapeOne: types.compound({
             m: types.number(1, {
                 nudgeMultiplier: .1
@@ -42,10 +42,18 @@ const Raymarch = () => {
             nThree: types.number(1, {
                 nudgeMultiplier: .1
             })
+        }),
+        fog: types.compound({
+            near: types.number(1, {
+                nudgeMultiplier: .1
+            }),
+            far: types.number(1, {
+                nudgeMultiplier: .1
+            }),
         })
     })
 
-    const shaderRef = useRef()
+    const shaderRef = useRef<THREE.ShaderMaterial>(null)
     const resolution = useRef(new THREE.Vector2(0,0))
 
     const uniforms = useMemo(() => {
@@ -59,12 +67,14 @@ const Raymarch = () => {
             uSupershapeTwoM: {value: supershapeTwo.nTwo},
             uSupershapeTwoNOne: {value: supershapeTwo.m},
             uSupershapeTwoNTwo: {value: supershapeTwo.nOne},
-            uSupershapeTwoNThree: {value: supershapeTwo.nThree}
+            uSupershapeTwoNThree: {value: supershapeTwo.nThree},
+            uFogNear: {value: fog.near},
+            uFogFar: {value: fog.far}
         }
     }, [])
 
     useFrame(({clock, size}) => {
-        if (shaderRef) {
+        if (shaderRef && shaderRef.current) {
             shaderRef.current.uniforms.iTime.value = clock.elapsedTime
             shaderRef.current.uniforms.uSupershapeOneM.value = supershapeOne.m
             shaderRef.current.uniforms.uSupershapeOneNOne.value = supershapeOne.nOne
@@ -74,19 +84,63 @@ const Raymarch = () => {
             shaderRef.current.uniforms.uSupershapeTwoNOne.value = supershapeTwo.nOne
             shaderRef.current.uniforms.uSupershapeTwoNTwo.value = supershapeTwo.nTwo
             shaderRef.current.uniforms.uSupershapeTwoNThree.value = supershapeTwo.nThree
+            shaderRef.current.uniforms.uFogNear.value = fog.near
+            shaderRef.current.uniforms.uFogFar.value = fog.far
             resolution.current.set(size.width, size.height)
         }
     })
 
-    return <mesh>
-        <planeGeometry args={[6,6]} />
-        <shaderMaterial 
-        ref={shaderRef}
-        fragmentShader={fragment} 
-        vertexShader={vertex} 
-        uniforms={uniforms}
-        transparent/>
-    </mesh>;
+    return (
+    <>
+        <mesh position={[0,0,-.1]}>
+            <planeGeometry args={[12,6]}/>
+            <shaderMaterial vertexShader={`varying vec2 vUv;
+                    void main() {
+                        vUv = uv;
+                        gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+                    }
+                `}  
+                fragmentShader={`
+                    varying vec2 vUv;
+
+                    void main() {
+                        vec2 uv = vUv - .5;
+
+                        uv.y /= 2.;
+                        float gradientFactor = .65 - pow(length(uv), .5);
+
+                        vec3 bgColor = mix(vec3(.21), vec3(.75), gradientFactor);
+
+                        if (length(uv) - .1 < .001 && length(uv) - .1 > - .001) {
+                            bgColor *= 1.15;
+                        }
+                        if (length(uv) - .3 < .001 && length(uv) - .3 > - .001) {
+                            bgColor *= 1.15;
+                        }
+
+                        if (length(uv) - .45 < .001 && length(uv) - .45 > - .001) {
+                            bgColor *= 1.15;
+                        }
+
+                        if (length(uv) - .5 < .001 && length(uv) - .5 > - .001) {
+                            bgColor *= 1.15;
+                        }
+                         
+                        gl_FragColor = vec4(bgColor, 1.);
+                    }
+                `}/>
+        </mesh>
+        <mesh rotation={[0,0,Math.PI/2]} >
+            <planeGeometry args={[6,6]} />
+            <shaderMaterial 
+                ref={shaderRef}
+                fragmentShader={fragment} 
+                vertexShader={vertex} 
+                uniforms={uniforms}
+                transparent/>
+        </mesh>
+    </>
+    );
 }
  
 export default Raymarch;

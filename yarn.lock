@@ -1027,6 +1027,36 @@
   resolved "https://registry.yarnpkg.com/@studio-freight/lenis/-/lenis-1.0.27.tgz#1a333e192efa1a036074f7dcffba847d4c45f6d1"
   integrity sha512-1I6EaWR9rxdFjIJtF52CtETJt9ngfY4AjawrJY5pLxCvHa/lQZ+1v2gTUntwNZkuks6E2It6YEXV6jnpnCZFjA==
 
+"@theatre/core@0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@theatre/core/-/core-0.7.0.tgz#1bcc074056cf2536f2818b0ad3a59fba97142d32"
+  integrity sha512-CXRUxOaKQtb4biQa6+I6PW8wPsFj9NsZgr7VdosSB20WxlanQ8/ZR0xH/A3A3oCHdCXKaZxQlNcEOeByk4Yf/g==
+  dependencies:
+    "@theatre/dataverse" "0.7.0"
+
+"@theatre/dataverse@0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@theatre/dataverse/-/dataverse-0.7.0.tgz#d8c75342ae5fd15a88b32b5a000c31fd40facf16"
+  integrity sha512-NbhTZYOqETp9g0II7R9GypErnZ47TmoT6yzyQ0vGfgVLD1a+dsPG+CLvvyzssbGG/gfDDoMzkXNwWJAwNkqFvQ==
+  dependencies:
+    lodash-es "^4.17.21"
+
+"@theatre/react@0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@theatre/react/-/react-0.7.0.tgz#3a5ad77b6f8634cdae247fa10c529eb1e1c20b91"
+  integrity sha512-AOMWUMYsscp6M09xHyqyJ7/OWIvwl7hP8Px++a597ffZw1PAy9atiEcRuuP8Eot7v0F9k2StS2KFbL3iPA0RPQ==
+  dependencies:
+    "@theatre/dataverse" "0.7.0"
+    lodash-es "^4.17.21"
+    queue-microtask "^1.2.3"
+
+"@theatre/studio@0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@theatre/studio/-/studio-0.7.0.tgz#d5ea0bb6be6941eadb6347851371db51379df3fe"
+  integrity sha512-aBkDUBmvajWaha5dd/6Fs7sHCDMQKqVlLX9SDGsMJkKoCEb9dzwD5F5FOZCWt+OhbbwIbP9dYR6S4n6abyDkBQ==
+  dependencies:
+    "@theatre/dataverse" "0.7.0"
+
 "@types/babel__core@^7.1.18":
   version "7.1.19"
   resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.1.19.tgz#7b497495b7d1b4812bdb9d02804d0576f43ee460"
@@ -1819,6 +1849,11 @@ lines-and-columns@^1.1.6:
   resolved "https://registry.yarnpkg.com/lines-and-columns/-/lines-and-columns-1.2.4.tgz#eca284f75d2965079309dc0ad9255abb2ebc1632"
   integrity sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==
 
+lodash-es@^4.17.21:
+  version "4.17.21"
+  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.21.tgz#43e626c46e6591b7750beb2b50117390c609e3ee"
+  integrity sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==
+
 lodash.clamp@^4.0.3:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/lodash.clamp/-/lodash.clamp-4.0.3.tgz#5c24bedeeeef0753560dc2b4cb4671f90a6ddfaa"
@@ -2113,7 +2148,7 @@ prop-types@^15.6.0:
     object-assign "^4.1.1"
     react-is "^16.13.1"
 
-queue-microtask@^1.2.2:
+queue-microtask@^1.2.2, queue-microtask@^1.2.3:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/queue-microtask/-/queue-microtask-1.2.3.tgz#4929228bbc724dfac43e0efb058caf7b6cfb6243"
   integrity sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==
@@ -2415,6 +2450,15 @@ tailwindcss@^3.3.5:
     postcss-selector-parser "^6.0.11"
     resolve "^1.22.2"
     sucrase "^3.32.0"
+
+theatric@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/theatric/-/theatric-0.7.0.tgz#f3b8e76d6372c5cc720a75b118c968d235cfdc10"
+  integrity sha512-NHn2JEFLPYOEdlp2ZTxhuqjqNtuYfAM19ewtWEJx67cfjOH8umvf7nMbU5Gez+T0egw+yhs9BAlpVmWTnpa6cw==
+  dependencies:
+    "@theatre/core" "0.7.0"
+    "@theatre/react" "0.7.0"
+    "@theatre/studio" "0.7.0"
 
 thenify-all@^1.0.0:
   version "1.6.0"

@@ -1,7 +1,6 @@
 {
   "netlify.site_id": "yall-land",
   "editor.tabSize": 2,
-  "editor.formatOnSave": true,
   "files.insertFinalNewline": true,
   "editor.codeActionsOnSave": {
     // "source.organizeImports": true,
@@ -28,5 +27,16 @@
 
   // Allows for twin suggestions without importing twin
   // - devDependency babel-plugin-twin relies on this to be set to "false" for correct suggestion behavior
-  "tailwindcss.jsxPropImportChecking": false
+  "tailwindcss.jsxPropImportChecking": false,
+
+  "editor.formatOnPaste": false, // required 
+  "editor.formatOnType": false, // required
+  "editor.formatOnSave": true, // optional 
+  "editor.formatOnSaveMode": "file", // required to format on save
+  "files.autoSave": "onFocusChange", // optional but recommended
+  "vs-code-prettier-eslint.prettierLast": false,
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  } // set as "true" to run 'prettier' last not first
+
 }

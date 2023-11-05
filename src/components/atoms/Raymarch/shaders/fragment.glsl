@@ -8,6 +8,8 @@ uniform float uSupershapeTwoM;
 uniform float uSupershapeTwoNOne;
 uniform float uSupershapeTwoNTwo;
 uniform float uSupershapeTwoNThree;
+uniform float uFogNear;
+uniform float uFogFar;
 
 varying vec2 vUv;
 
@@ -15,6 +17,7 @@ varying vec2 vUv;
 #define RAYMARCH_MAX_STEPS 		512
 #define RAYMARCH_MAX_DIST 		1000.0
 #define RAYMARCH_SURFACE_DIST 	0.000001
+
 
 vec2 getAngle(vec3 p) {
     float theta = asin(p.z / length(p));
@@ -38,11 +41,11 @@ float supershape(float theta, float m, float n1, float n2, float n3, float a, fl
 float getDist(vec3 p) {
 	vec2 angle = getAngle(p);
     
-    angle.x += 10.*.25*sin(iTime * .1);
-    angle.y += iTime * .15;
+    angle.x += 2.5 * sin(iTime * .25);
+    angle.y += 2.5 * sin(iTime * .1);
     
     float r1 = supershape(angle.x,
-                          uSupershapeOneM,
+                          uSupershapeOneM + cos(iTime * .1) * 5.,
                           uSupershapeOneNOne,
                           uSupershapeOneNTwo,
                           uSupershapeOneNThree,
@@ -50,7 +53,7 @@ float getDist(vec3 p) {
                           1.);
     
     float r2 = supershape(angle.y, 
-                          uSupershapeTwoM, 
+                          uSupershapeTwoM + sin(iTime * .35) * 20., 
                           uSupershapeTwoNOne,
                           uSupershapeTwoNTwo,
                           uSupershapeTwoNThree,
@@ -130,7 +133,7 @@ float shadowMarch( vec3 ro, vec3 rd ) {
         if( res < 0.0001 || dO > RAYMARCH_MAX_DIST ) break;
     }
     
-    return res;//clamp( res, 0.0, 1.0 );
+    return res;
 }
 
 void main() {
@@ -140,8 +143,8 @@ void main() {
     float an = -iTime * 0.1;
     
     // Camera matrix and movement from https://www.shadertoy.com/view/ldl3Dl
-    float cd = 6.5 + (sin(an) + 1.0);
-    vec3 ro = vec3( 6., 0., -6.);
+    float cd = 6.5;
+    vec3 ro = vec3( 6., 6., 0.);
     vec3 ta = vec3( 0.0, 0.0, 0.0 );
     vec3 ww = normalize( ta - ro );
     vec3 uu = normalize( cross(ww,vec3(0.0,1.0,0.0) ) );
@@ -150,8 +153,12 @@ void main() {
     
     int mr = 0;
     float d = rayMarch(ro, rd, mr);
-    
-    vec4 col = vec4(0.);
+
+    float gradientFactor = .65 - pow(length(uv), .5);
+
+    vec3 bgColor = mix(vec3(.3), vec3(.75), gradientFactor);
+
+    vec4 col = vec4(bgColor, 0.);
 
     if (mr == 1) {
         vec3 p = ro + rd * d;
@@ -160,11 +167,21 @@ void main() {
       	vec3 lightPos = normalize(vec3(10., 10.0, 20.0));
      	vec3 l = normalize(lightPos - p);
       	vec3 n = getNormal(p);
-    	float s = 1.0 + dot(n, l);
-        float d = shadowMarch( p, lightPos );
-    	col.rgb *= vec3(s)*(0.5 + d);
+    	float s = 0.7 + 0.3 *dot(n, l);
+        float fogFactor = (uFogFar - distance(ro, p))/(uFogFar - uFogNear);
+        vec3 fogColor = vec3(0.,0.,0.);
+        vec3 diffuseColor = vec3(1.,.996,.984);
+    	col.rgb *= mix(bgColor, s*diffuseColor, fogFactor);
         col.a = 1.;
     }
+
+     // Calculate noise and sample texture
+    float mdf = 0.05; // increase for noise amount 
+    float noise = (fract(sin(dot(vec2(uv.x + iTime, uv.y), vec2(12.9898,78.233)*2.0)) * 43758.5453));
+    
+    mdf *= sin(iTime) + 1.0; // animate the effect's strength
+
+    col.rgb = col.rgb - noise * mdf;
     
     gl_FragColor = col;
 }
