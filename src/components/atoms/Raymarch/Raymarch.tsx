@@ -1,9 +1,10 @@
 import { useFrame, useThree } from '@react-three/fiber';
-import React, { useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { initialize, types, useControls } from 'theatric';
 import * as THREE from "three";
 import raymarchState from "./raymarch-state.json";
 import fragment from "./shaders/fragment.glsl?raw";
+import BGFragment from "./shaders/bgfragment.glsl?raw";
 import vertex from "./shaders/vertex.glsl?raw";
 
 initialize({
@@ -13,6 +14,18 @@ initialize({
 
 
 const Raymarch = () => {
+    const anchor = document.querySelector("#hero") as HTMLDivElement
+    const group = useRef(null)
+    const raymarch = useRef()
+    const background = useRef()
+    const backgroundShader = useRef()
+    const aspect = useRef(1)
+
+    useEffect(() => {
+        if (anchor) {
+            anchor.style['opacity'] = '0'
+        }
+    }, [])
 
     const {supershapeOne, supershapeTwo, fog} = useControls({
         supershapeOne: types.compound({
@@ -75,6 +88,10 @@ const Raymarch = () => {
         }
     }, [])
 
+    const bgUniforms = useMemo(() => {
+        return {iAspect: {value: aspect.current}, iTime: {value: 0}}
+    },[])
+
     useFrame(({clock, size}) => {
         if (shaderRef && shaderRef.current) {
             shaderRef.current.uniforms.iTime.value = clock.elapsedTime
@@ -90,50 +107,42 @@ const Raymarch = () => {
             shaderRef.current.uniforms.uFogFar.value = fog.far
             resolution.current.set(size.width, size.height)
         }
+        if (backgroundShader && backgroundShader.current) {     
+            backgroundShader.current.uniforms.iTime.value = clock.elapsedTime
+            backgroundShader.current.uniforms.iAspect.value = aspect.current
+        }
     })
+    
+    const handleResize = useCallback(() => {
+        if (background.current && group.current && anchor) {
+            const {height, width, top, left} = anchor.getBoundingClientRect()
+            background.current.scale.set(width, height, 1)
+            raymarch.current.scale.set(height, height, 1)
+            const x = left - window.innerWidth / 2 + width/2
+            const y = -top + window.innerHeight / 2 - height/2
+            group.current.position.set(x,y,0)
+            aspect.current = width/height
+        }
+    }, [])
+
+    useEffect(() => {
+        window.addEventListener("resize", handleResize)
+        handleResize()
+
+        return () => {
+            window.removeEventListener("resize", handleResize)
+        }
+    }, [background.current])
 
     return (
-    <>
-        <mesh position={[0,0,-.1]}>
-            <planeGeometry args={[12,6]}/>
-            <shaderMaterial vertexShader={`varying vec2 vUv;
-                    void main() {
-                        vUv = uv;
-                        gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
-                    }
-                `}  
-                fragmentShader={`
-                    varying vec2 vUv;
-
-                    void main() {
-                        vec2 uv = vUv - .5;
-
-                        uv.y /= 2.;
-                        float gradientFactor = .65 - pow(length(uv), .5);
-
-                        vec3 bgColor = mix(vec3(.21), vec3(.75), gradientFactor);
-
-                        if (length(uv) - .15 < .001 && length(uv) - .15 > - .001) {
-                            bgColor *= 1.15;
-                        }
-                        if (length(uv) - .3 < .001 && length(uv) - .3 > - .001) {
-                            bgColor *= 1.15;
-                        }
-
-                        if (length(uv) - .45 < .001 && length(uv) - .45 > - .001) {
-                            bgColor *= 1.15;
-                        }
-
-                        if (length(uv) - .5 < .001 && length(uv) - .5 > - .001) {
-                            bgColor *= 1.15;
-                        }
-                         
-                        gl_FragColor = vec4(bgColor, 1.);
-                    }
-                `}/>
+    <group ref={group}>
+        <mesh position={[0,0,-.1]} ref={background}>
+            <planeGeometry args={[1,1]} />
+            <shaderMaterial ref={backgroundShader} uniforms={bgUniforms} vertexShader={vertex}  
+                fragmentShader={BGFragment}/>
         </mesh>
-        <mesh rotation={[0,0,Math.PI/2]} >
-            <planeGeometry args={[6,6]} />
+        <mesh rotation={[0,0,Math.PI/2]} ref={raymarch} >
+            <planeGeometry args={[1,1]} />
             <shaderMaterial 
                 ref={shaderRef}
                 fragmentShader={fragment} 
@@ -141,7 +150,7 @@ const Raymarch = () => {
                 uniforms={uniforms}
                 transparent/>
         </mesh>
-    </>
+    </group>
     );
 }
  

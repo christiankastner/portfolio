@@ -1,9 +1,7 @@
 import React, { FC, Suspense, lazy, useEffect, useState } from 'react';
 import { SmoothScroll } from '../../atoms/SmoothScroll';
 import { Canvas } from '@react-three/fiber';
-const CanvasBackground = lazy(
-  () => import('../CanvasBackground/CanvasBackground'),
-);
+import CanvasBackground from '../CanvasBackground/CanvasBackground';
 
 export type CanvasAppProps = {
   //
@@ -12,7 +10,7 @@ export type CanvasAppProps = {
 /**
  *
  */
-export const CanvasApp: FC<CanvasAppProps> = () => {
+const CanvasApp: FC<CanvasAppProps> = () => {
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
     setTimeout(() => {
@@ -21,12 +19,14 @@ export const CanvasApp: FC<CanvasAppProps> = () => {
   }, []);
 
   return (
-    <Canvas>
+    <Canvas dpr={1} gl={{antialias: false}}>
       <SmoothScroll loaded={loaded} />
       {/* <Loader loaded={loaded} /> */}
-      <Suspense fallback={null}>
+
         <CanvasBackground />
-      </Suspense>
     </Canvas>
   );
 };
+
+
+export default CanvasApp

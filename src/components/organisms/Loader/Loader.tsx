@@ -22,7 +22,6 @@ export const Loader: FC<LoaderProps> = ({ loaded }) => {
     if (loaded) {
       if (targetDiv && ref.current) {
         const { height, width, top, left } = targetDiv?.getBoundingClientRect();
-        console.log(typeof left);
         animate(
           ref.current,
           {

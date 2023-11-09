@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "develop": "vite --port 3000",
+    "develop:mobile": "vite --port 3000 --host",
     "build": "vite build",
     "preview": "vite preview",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",

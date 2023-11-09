@@ -167,7 +167,7 @@ void main() {
       	vec3 lightPos = normalize(vec3(0., -10.0, 10.0));
      	vec3 l = normalize(lightPos - p);
       	vec3 n = getNormal(p);
-    	float s = 0.7 + 0.3 *dot(n, l);
+    	float s = clamp(0.7 + 0.3 *dot(n, l), 0., 1.);
         float fogFactor = (uFogFar - distance(ro, p))/(uFogFar - uFogNear);
         vec3 fogColor = vec3(0.,0.,0.);
         vec3 diffuseColor = vec3(1.,.996,.984);
@@ -177,9 +177,7 @@ void main() {
 
      // Calculate noise and sample texture
     float mdf = 0.05; // increase for noise amount 
-    float noise = (fract(sin(dot(vec2(uv.x + iTime, uv.y), vec2(12.9898,78.233)*2.0)) * 43758.5453));
-    
-    mdf *= sin(iTime) + 1.0; // animate the effect's strength
+    float noise = (fract(sin(dot(vec2(uv.x, uv.y), vec2(12.9898,78.233)*2.0)) * 43758.5453));
 
     col.rgb = col.rgb - noise * mdf;
     
